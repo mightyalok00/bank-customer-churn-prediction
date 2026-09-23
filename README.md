@@ -48,6 +48,16 @@ The model should **not** be used for fully automated customer decisions. It shou
 | Stayed customers | 130,110 |
 | Churned customers | 34,921 |
 
+## 🗂️ Data Location
+
+The preferred clean raw-data path is:
+
+```text
+data/raw/Bank_churn.csv
+```
+
+The code also keeps a temporary legacy fallback for older local copies that still have `Bank_churn.csv` in the project root, but new work should use the `data/raw/` structure.
+
 ## 🧠 Models Used
 
 1. Decision Tree using **Gini Impurity**
@@ -187,7 +197,10 @@ bank-customer-churn-prediction/
 ├── .streamlit/
 │   └── config.toml
 ├── data/
-│   └── processed/bank_churn_cleaned.csv
+│   ├── raw/
+│   │   └── Bank_churn.csv
+│   └── processed/
+│       └── bank_churn_cleaned.csv
 ├── images/
 │   ├── confusion_matrix.png
 │   ├── roc_curve.png
@@ -224,7 +237,6 @@ bank-customer-churn-prediction/
 ├── CONTRIBUTING.md
 ├── LICENSE
 ├── README.md
-├── Bank_churn.csv
 ├── requirements.txt
 ├── requirements-dev.txt
 ├── pyproject.toml
