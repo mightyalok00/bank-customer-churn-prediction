@@ -3,11 +3,16 @@
 ![Python](https://img.shields.io/badge/Python-3.12--3.14-blue)
 ![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Classification-green)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
+[![Live App](https://img.shields.io/badge/Live%20App-Open%20Streamlit-FF4B4B?logo=streamlit&logoColor=white)](https://alok-bank-churn-predictor.streamlit.app/)
 ![CI](https://github.com/mightyalok00/bank-customer-churn-prediction/actions/workflows/ci.yml/badge.svg)
 ![License](https://img.shields.io/badge/License-MIT-yellow.svg)
 ![Status](https://img.shields.io/badge/Portfolio-Ready-brightgreen)
 
 A complete binary classification portfolio project that predicts whether a bank customer will churn using **Gini Impurity**, **Decision Tree**, **Entropy**, and **Random Forest**.
+
+## 🌐 Live Demo
+
+Try the deployed application: **[alok-bank-churn-predictor.streamlit.app](https://alok-bank-churn-predictor.streamlit.app/)**
 
 ## 🎯 Business Objective
 
