@@ -6,9 +6,21 @@ import sys
 
 import joblib
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
-from sklearn.metrics import ConfusionMatrixDisplay, RocCurveDisplay
-from sklearn.model_selection import train_test_split
+from sklearn.calibration import CalibrationDisplay
+from sklearn.metrics import (
+    ConfusionMatrixDisplay,
+    PrecisionRecallDisplay,
+    RocCurveDisplay,
+    accuracy_score,
+    classification_report,
+    confusion_matrix,
+    f1_score,
+    precision_score,
+    recall_score,
+)
+from sklearn.model_selection import StratifiedKFold, cross_validate, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.tree import DecisionTreeClassifier, plot_tree
 
@@ -32,7 +44,7 @@ def get_feature_names(pipeline: Pipeline, numeric_features, categorical_features
 
 
 def main() -> None:
-    """Generate confusion matrix, ROC curve, feature importance, and tree image."""
+    """Generate holdout, cross-validation, threshold, and explainability artifacts."""
     IMAGES_DIR.mkdir(parents=True, exist_ok=True)
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     df = pd.read_csv(PROCESSED_DATA_PATH)
@@ -43,6 +55,8 @@ def main() -> None:
     pipeline = joblib.load(MODEL_PATH)
     y_pred = pipeline.predict(X_test)
     y_proba = pipeline.predict_proba(X_test)[:, 1]
+
+    plt.style.use("seaborn-v0_8-whitegrid")
 
     ConfusionMatrixDisplay.from_predictions(y_test, y_pred, display_labels=["Stayed", "Churned"])
     plt.title("Confusion Matrix - Final Churn Model")
@@ -55,6 +69,89 @@ def main() -> None:
     plt.tight_layout()
     plt.savefig(IMAGES_DIR / "roc_curve.png", dpi=160)
     plt.close()
+
+    PrecisionRecallDisplay.from_predictions(y_test, y_proba, name="Final model")
+    plt.axhline(y=float(y_test.mean()), color="gray", linestyle="--", label="Churn baseline")
+    plt.title("Precision–Recall Curve - Final Churn Model")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / "precision_recall_curve.png", dpi=160)
+    plt.close()
+
+    CalibrationDisplay.from_predictions(y_test, y_proba, n_bins=10, strategy="quantile")
+    plt.title("Probability Calibration - Final Churn Model")
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / "calibration_curve.png", dpi=160)
+    plt.close()
+
+    report = pd.DataFrame(
+        classification_report(
+            y_test,
+            y_pred,
+            target_names=["Stayed", "Churned"],
+            output_dict=True,
+            zero_division=0,
+        )
+    ).transpose()
+    report.to_csv(REPORTS_DIR / "classification_report.csv")
+
+    threshold_rows = []
+    for threshold in np.arange(0.30, 0.71, 0.05):
+        threshold_pred = (y_proba >= threshold).astype(int)
+        tn, fp, fn, tp = confusion_matrix(y_test, threshold_pred).ravel()
+        threshold_rows.append({
+            "threshold": round(float(threshold), 2),
+            "accuracy": accuracy_score(y_test, threshold_pred),
+            "precision": precision_score(y_test, threshold_pred, zero_division=0),
+            "recall": recall_score(y_test, threshold_pred, zero_division=0),
+            "f1_score": f1_score(y_test, threshold_pred, zero_division=0),
+            "specificity": tn / (tn + fp),
+            "true_positives": int(tp),
+            "false_positives": int(fp),
+            "false_negatives": int(fn),
+            "true_negatives": int(tn),
+        })
+    threshold_df = pd.DataFrame(threshold_rows)
+    threshold_df.to_csv(REPORTS_DIR / "threshold_analysis.csv", index=False)
+    threshold_df.plot(
+        x="threshold",
+        y=["precision", "recall", "f1_score"],
+        marker="o",
+        figsize=(9, 5),
+    )
+    plt.ylim(0, 1)
+    plt.ylabel("Score")
+    plt.title("Decision Threshold Trade-offs")
+    plt.tight_layout()
+    plt.savefig(IMAGES_DIR / "threshold_analysis.png", dpi=160)
+    plt.close()
+
+    cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
+    cv_scores = cross_validate(
+        pipeline,
+        X,
+        y,
+        cv=cv,
+        scoring={
+            "accuracy": "accuracy",
+            "precision": "precision",
+            "recall": "recall",
+            "f1_score": "f1",
+            "roc_auc": "roc_auc",
+            "pr_auc": "average_precision",
+        },
+        n_jobs=1,
+    )
+    cv_summary = pd.DataFrame([
+        {
+            "metric": metric.removeprefix("test_"),
+            "mean": values.mean(),
+            "standard_deviation": values.std(ddof=1),
+        }
+        for metric, values in cv_scores.items()
+        if metric.startswith("test_")
+    ])
+    cv_summary.to_csv(REPORTS_DIR / "cross_validation.csv", index=False)
 
     model = pipeline.named_steps["model"]
     feature_names = get_feature_names(pipeline, numeric_features, categorical_features)
@@ -91,7 +188,7 @@ def main() -> None:
     plt.tight_layout()
     plt.savefig(IMAGES_DIR / "decision_tree_visual.png", dpi=160)
     plt.close()
-    print("Charts saved in images/ and feature importance saved in reports/.")
+    print("Evaluation charts and validation reports saved successfully.")
 
 
 if __name__ == "__main__":

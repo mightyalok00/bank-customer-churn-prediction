@@ -4,6 +4,12 @@ __pycache__/
 .venv/
 venv/
 .env
+.streamlit/secrets.toml
+
+# Testing and coverage
+.pytest_cache/
+.coverage
+htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/

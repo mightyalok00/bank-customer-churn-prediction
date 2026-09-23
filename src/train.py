@@ -17,7 +17,15 @@ import pandas as pd
 from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.impute import SimpleImputer
-from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
+from sklearn.metrics import (
+    accuracy_score,
+    average_precision_score,
+    brier_score_loss,
+    f1_score,
+    precision_score,
+    recall_score,
+    roc_auc_score,
+)
 from sklearn.model_selection import GridSearchCV, train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
@@ -62,6 +70,8 @@ def evaluate_model(name: str, pipeline: Pipeline, X_train, X_test, y_train, y_te
         "recall": recall_score(y_test, test_pred, zero_division=0),
         "f1_score": f1_score(y_test, test_pred, zero_division=0),
         "roc_auc": roc_auc_score(y_test, test_proba),
+        "pr_auc": average_precision_score(y_test, test_proba),
+        "brier_score": brier_score_loss(y_test, test_proba),
         "overfit_gap_accuracy": train_accuracy - test_accuracy,
     }
 
@@ -136,6 +146,9 @@ def main() -> None:
         "test_rows": int(len(X_test)),
         "best_model": str(best_model_name),
         "best_params": search.best_params_,
+        "random_state": 42,
+        "test_size": 0.20,
+        "decision_threshold": 0.50,
         "class_distribution": {str(k): int(v) for k, v in y.value_counts().sort_index().items()},
     }
     METADATA_PATH.write_text(json.dumps(metadata, indent=2), encoding="utf-8")

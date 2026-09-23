@@ -33,6 +33,9 @@
     "model__min_samples_leaf": 80,
     "model__n_estimators": 50
   },
+  "random_state": 42,
+  "test_size": 0.2,
+  "decision_threshold": 0.5,
   "class_distribution": {
     "0": 130110,
     "1": 34921

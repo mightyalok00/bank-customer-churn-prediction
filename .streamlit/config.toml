@@ -1,0 +1,15 @@
+[theme]
+base = "light"
+primaryColor = "#0B6E75"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F1F7F7"
+textColor = "#173042"
+borderColor = "#CADDDD"
+showWidgetBorder = true
+showSidebarBorder = true
+baseRadius = "8px"
+buttonRadius = "8px"
+chartCategoricalColors = ["#0B6E75", "#E08E45", "#3973AC", "#7A5EA7", "#C14953", "#5B8C5A"]
+
+[server]
+headless = true

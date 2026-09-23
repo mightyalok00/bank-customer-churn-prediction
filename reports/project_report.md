@@ -3,7 +3,7 @@
 ## Executive Summary
 This project predicts whether a bank customer is likely to churn using Decision Tree and Random Forest classification models. The cleaned modeling dataset has **165,031 rows and 12 columns** after identity removal, combined-field parsing, validation, and duplicate removal. The churn rate is **21.16%**, so the problem is a binary classification task focused on identifying customers who may leave.
 
-The best model by F1-score is **Decision Tree - Gini**. The project includes Gini Impurity, Entropy comparison, Random Forest feature importance, confusion matrix, ROC curve, saved model pipeline, and a Streamlit app.
+The best model by holdout F1-score is **Decision Tree - Gini**. The project includes Gini Impurity, Entropy comparison, Random Forest feature importance, confusion matrix, ROC and precision-recall curves, probability calibration, five-fold cross-validation, threshold analysis, a saved model pipeline, and a tested Streamlit app.
 
 ## Key Dataset Findings
 - Raw dataset shape: **165,034 rows × 14 columns**.
@@ -15,12 +15,20 @@ The best model by F1-score is **Decision Tree - Gini**. The project includes Gin
 - Highest churn age group: **51-60 (60.84%)**.
 
 ## Model Comparison
-| model                   |   train_accuracy |   test_accuracy |   precision |   recall |   f1_score |   roc_auc |   overfit_gap_accuracy |
-|:------------------------|-----------------:|----------------:|------------:|---------:|-----------:|----------:|-----------------------:|
-| Decision Tree - Gini    |         0.806262 |        0.803587 |    0.524658 | 0.763173 |   0.621828 |  0.869526 |            0.002675 |
-| Decision Tree - Entropy |         0.805301 |        0.802375 |    0.522658 | 0.761312 |   0.619805 |  0.870240 |            0.002925 |
-| Random Forest           |         0.800923 |        0.797104 |    0.513534 | 0.779639 |   0.619207 |  0.869992 |            0.003819 |
-| Tuned Random Forest     |         0.799658 |        0.795649 |    0.511222 | 0.779496 |   0.617479 |  0.869517 |            0.004008 |
+| Model | Test accuracy | Precision | Recall | F1 | ROC-AUC | PR-AUC | Brier score |
+|:--|--:|--:|--:|--:|--:|--:|--:|
+| Decision Tree - Gini | 0.8036 | 0.5247 | 0.7632 | 0.6218 | 0.8695 | 0.6747 | 0.1434 |
+| Decision Tree - Entropy | 0.8024 | 0.5227 | 0.7613 | 0.6198 | 0.8702 | 0.6819 | 0.1427 |
+| Random Forest | 0.7971 | 0.5135 | 0.7796 | 0.6192 | 0.8700 | 0.6712 | 0.1468 |
+| Tuned Random Forest | 0.7956 | 0.5112 | 0.7795 | 0.6175 | 0.8695 | 0.6701 | 0.1470 |
+
+## Five-Fold Cross-Validation
+
+The selected Gini tree achieved mean accuracy **0.8029 ± 0.0063**, F1 **0.6214 ± 0.0054**, ROC-AUC **0.8719 ± 0.0030**, and PR-AUC **0.6815 ± 0.0041**. These small fold-to-fold deviations support the stability of the holdout result.
+
+## Decision Threshold
+
+At the default 0.50 threshold, recall is **76.32%**, precision is **52.47%**, and F1 is **62.18%**. `reports/threshold_analysis.csv` shows alternatives from 0.30 to 0.70 so a bank can choose a threshold using retention capacity and false-positive cost rather than accuracy alone.
 
 ## Top Feature Importances
 | feature                  |   importance |
