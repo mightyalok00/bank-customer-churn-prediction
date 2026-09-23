@@ -14,6 +14,10 @@ A complete binary classification portfolio project that predicts whether a bank 
 
 Try the deployed application: **[alok-bank-churn-predictor.streamlit.app](https://alok-bank-churn-predictor.streamlit.app/)**
 
+[![Bank customer churn predictor Streamlit interface](images/streamlit_app_screenshot.png)](https://alok-bank-churn-predictor.streamlit.app/)
+
+*Interactive customer scoring with adjustable decision threshold, risk probability, review priority, and recommended retention action.*
+
 ## 🎯 Business Objective
 
 Predict the target column `Exited`:
@@ -104,6 +108,7 @@ The app includes:
 - `images/threshold_analysis.png`
 - `images/feature_importance.png`
 - `images/decision_tree_visual.png`
+- `images/streamlit_app_screenshot.png`
 
 ## 🚀 Run Locally
 
@@ -138,7 +143,8 @@ bank-customer-churn-prediction/
 │   ├── calibration_curve.png
 │   ├── threshold_analysis.png
 │   ├── feature_importance.png
-│   └── decision_tree_visual.png
+│   ├── decision_tree_visual.png
+│   └── streamlit_app_screenshot.png
 ├── models/
 │   ├── churn_model.pkl
 │   └── model_metadata.json
