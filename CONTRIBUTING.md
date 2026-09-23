@@ -4,7 +4,7 @@ Thank you for improving this educational churn-prediction project.
 
 ## Development setup
 
-1. Create and activate a Python 3.11 virtual environment.
+1. Create and activate a Python 3.12-3.14 virtual environment.
 2. Install development dependencies with `pip install -r requirements-dev.txt`.
 3. Run `python -m pytest` before submitting a change.
 4. Run `python src/train.py` and `python src/evaluate.py` when changing the model pipeline.

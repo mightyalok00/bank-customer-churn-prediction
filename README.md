@@ -1,6 +1,6 @@
 # 🏦 Bank Customer Churn Prediction using Decision Tree and Random Forest
 
-![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
+![Python](https://img.shields.io/badge/Python-3.12--3.14-blue)
 ![Machine Learning](https://img.shields.io/badge/Machine%20Learning-Classification-green)
 ![Streamlit](https://img.shields.io/badge/Streamlit-App-red)
 ![CI](https://github.com/mightyalok00/bank-customer-churn-prediction/actions/workflows/ci.yml/badge.svg)
