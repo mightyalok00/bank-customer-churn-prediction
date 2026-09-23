@@ -27,6 +27,14 @@ Predict the target column `Exited`:
 
 The business goal is to help a bank identify high-risk customers early and take retention action before they leave.
 
+## 💼 Business Impact
+
+This model helps the bank move from reactive churn handling to proactive retention planning.
+
+At the selected 0.50 threshold, the final model correctly identifies **5,330 churned customers** in the test set and misses **1,654 churners**. This gives the bank a practical early-warning system for prioritizing relationship-manager reviews, re-engagement campaigns, and retention offers.
+
+The model should **not** be used for fully automated customer decisions. It should support human review, campaign planning, controlled retention experiments, fairness checks, and responsible business decision-making.
+
 ## 📊 Dataset Summary
 
 | Item | Value |
@@ -81,6 +89,49 @@ The default threshold of `0.50` identifies 5,330 churners with 76.32% recall. Th
 - Top model features include: Age, NumOfProducts, IsActiveMember, Balance, Geography_Berlin-Germany.
 - The final model correctly identifies 5,330 churners and misses 1,654 churners in the test set at the 0.50 threshold.
 
+## 📸 Project Screenshots
+
+### Streamlit App
+![Streamlit App](images/streamlit_app_screenshot.png)
+
+### Confusion Matrix
+![Confusion Matrix](images/confusion_matrix.png)
+
+### ROC Curve
+![ROC Curve](images/roc_curve.png)
+
+### Feature Importance
+![Feature Importance](images/feature_importance.png)
+
+### Threshold Analysis
+![Threshold Analysis](images/threshold_analysis.png)
+
+## 🗣️ Interview Explanation
+
+This project predicts whether a bank customer is likely to churn. I cleaned the dataset, removed identity columns like `id`, `CustomerId`, and `Surname`, extracted `Geography` and `Gender`, and built a leakage-safe classification pipeline.
+
+I compared Decision Tree using Gini, Decision Tree using Entropy, Random Forest, and Tuned Random Forest. The final selected model is the Decision Tree with Gini because it achieved the strongest F1-score in this run.
+
+The most important churn signals were `Age`, `NumOfProducts`, `IsActiveMember`, `Balance`, and Berlin geography. The model is useful for prioritizing retention actions, but it should support human decision-making rather than fully automated banking decisions.
+
+## ✅ Quality Checks
+
+This repository includes automated checks for:
+
+- preprocessing logic
+- prediction pipeline loading
+- Streamlit app startup
+- reproducible model loading
+- responsible path handling for local and deployed environments
+
+Run locally:
+
+```bash
+python -m pytest
+```
+
+GitHub Actions repeats the automated test suite for every push and pull request.
+
 ## 📚 Complete Question Bank
 
 `reports/all_216_question_answers.md` contains the original 216 project, interview, business, ethics, deployment, and portfolio questions with evidence-based answers from the current project run.
@@ -88,6 +139,7 @@ The default threshold of `0.50` identifies 5,330 churners with 76.32% recall. Th
 - All 216 prompts match the original Word question bank.
 - Every prompt has a substantive answer in the report and notebook.
 - The requested executive summary for question 212 is exactly 150 words.
+- `reports/portfolio_9_out_of_10_upgrade_report.md` expands the most important business, metric, tuning, error-cost, limitation, and ethics areas for stronger interview and teacher review.
 
 ## 🖥️ Streamlit Application
 
@@ -157,6 +209,7 @@ bank-customer-churn-prediction/
 │   ├── classification_report.csv
 │   ├── feature_importance.csv
 │   ├── project_report.md
+│   ├── portfolio_9_out_of_10_upgrade_report.md
 │   └── all_216_question_answers.md
 ├── src/
 │   ├── config.py
