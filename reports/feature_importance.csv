@@ -1,0 +1,17 @@
+feature,importance
+Age,0.43384053959311086
+NumOfProducts,0.36345068729924984
+IsActiveMember,0.09591591489849306
+Balance,0.07311799629816636
+Geography_Berlin-Germany,0.0234237199855582
+Gender_Female,0.005176210724948417
+Gender_Male,0.005053198650468121
+EstimatedSalary,1.9447821166090917e-05
+HasCrCard,2.2847288389903955e-06
+Tenure,0.0
+CreditScore,0.0
+Rating,0.0
+Geography_Paris-France,0.0
+Geography_Madrid-Spain,0.0
+Geography_Unknown,0.0
+Gender_Unknown,0.0

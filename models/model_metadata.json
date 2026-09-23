@@ -1,0 +1,40 @@
+{
+  "csv_path_used": "D:\\bank-customer-churn-prediction-complete\\bank-customer-churn-prediction\\Bank_churn.csv",
+  "raw_shape": [
+    165034,
+    14
+  ],
+  "clean_shape": [
+    165031,
+    12
+  ],
+  "target_column": "Exited",
+  "numeric_features": [
+    "CreditScore",
+    "Age",
+    "Tenure",
+    "Balance",
+    "NumOfProducts",
+    "HasCrCard",
+    "IsActiveMember",
+    "EstimatedSalary",
+    "Rating"
+  ],
+  "categorical_features": [
+    "Geography",
+    "Gender"
+  ],
+  "train_rows": 132024,
+  "test_rows": 33007,
+  "best_model": "Decision Tree - Gini",
+  "best_params": {
+    "model__max_depth": 8,
+    "model__max_features": "sqrt",
+    "model__min_samples_leaf": 80,
+    "model__n_estimators": 50
+  },
+  "class_distribution": {
+    "0": 130110,
+    "1": 34921
+  }
+}
